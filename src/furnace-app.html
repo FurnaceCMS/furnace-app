@@ -10,21 +10,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="furnace-icons.html">
 
 <dom-module id="furnace-app">
 
   <template>
 
     <style>
-
       :host {
         display: block;
         --app-primary-color: #4285f4;
@@ -32,15 +31,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       app-header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
         background-color: var(--app-primary-color);
         color: #fff;
       }
       app-header paper-icon-button {
         --paper-icon-button-ink-color: white;
+      }
+      app-toolbar {
+        background-color: #4285f4;
+        color: #fff;
+      }
+
+      app-drawer {
+        --app-drawer-scrim-background: rgba(0, 0, 100, 0.8);
+
+        --app-drawer-content-container: {
+          background-color: #B0BEC5;
+        }
       }
 
       .drawer-list {
@@ -62,6 +69,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
 
+
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -71,26 +79,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
+      <app-toolbar>
+        <paper-icon-button id="mainNavButton" icon="menu"></paper-icon-button>
+      </app-toolbar>
 
-    <app-drawer-layout>
-      <app-drawer>
-        <paper-menu selected="{{page}}">
-          <paper-item>Meta Collections</paper-item>
-        </paper-menu>
+      <!-- Drawer content -->
+      <app-drawer id="mainNavDrawer" swipe-open>
+        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+          <a name="meta-collection-builder" href="/meta-collection-builder">Meta Collection Builder</a>
+           <a name="view2" href="/view2">view2</a>
+        </iron-selector>
       </app-drawer>
+     
 
-      <div>
-        <app-toolbar>
-          <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-        </app-toolbar>
-        <iron-pages selected="{{page}}">
-          <meta-collections name="meta-collections"></meta-collections>
-        </iron-pages>
-      </div>
+      <!-- Main content -->
+    <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
+      <meta-collection-builder name="meta-collection-builder"></meta-collection-builder>
+      <view2></view2>
+    </iron-pages>
 
-    </app-drawer-layout>
-
-     </template>
+  </template>
 
   <script>
 
@@ -107,22 +115,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
       },
-
       observers: [
         '_routePageChanged(routeData.page)'
       ],
 
       _routePageChanged: function(page) {
-        this.page = page || 'meta-collections';
+        this.page = page || 'meta-collection-builder';
+        this.$.mainNavDrawer.close();
       },
 
       _pageChanged: function(page) {
+
         // load page import on demand.
         this.importHref(
-          this.resolveUrl(page + '/' + page +'.html' ), null, null, true);
+          this.resolveUrl(page + '.html'), null, null, true);
+      },
+      ready: function() {
+        var mainNavDrawer = this.$.mainNavDrawer;
+        this.$.mainNavButton.addEventListener('tap', function() {
+          mainNavDrawer.toggle();
+        });
       }
-
     });
+
+    
+
   </script>
 
 </dom-module>
