@@ -12,16 +12,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
 
 <link rel="import" href="meta-collection-elements/string-meta.html">
+<link rel="import" href="meta-collection-elements/int-meta.html">
+<link rel="import" href="meta-collection-elements/date-time-meta.html">
+
+<link href='../bower_components/dragula.js/dist/dragula.min.css' rel='stylesheet' type='text/css' />
+<script type="text/javascript" src="../bower_components/dragula.js/dist/dragula.min.js"></script>
 
 <dom-module id="meta-collection-builder">
   <template>
+  <style type="text/css">
+    .wrapper
+    {
+      display: table;
+    }
 
+    #metas
+    {
+      display: table-cell;
+      width: 30%;
+    }
+
+    #metaCollection
+    {
+      display: table-cell;
+      width: 70%;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+
+
+  </style>
     
-    <dir>
+    <dir class="wrapper">
       <div id="metas">
-        <string-meta draggable="true"></string-meta>
+        <string-meta class="meta"></string-meta>
+        <int-meta class="meta"></int-meta>
+        <date-time-meta  class="meta"></date-time-meta>
       </div>
-      <div id="meta-collection"></div>
+      <div id="metaCollection"></div>
     </dir>
 
   </template>
@@ -30,23 +58,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     Polymer({
 
-      is: 'meta-collection-builder'
+      is: 'meta-collection-builder',
+      ready: function() {
+        var metas = this.$.metas;
+        var metaCollection = this.$.metaCollection;
 
+        dragula([document.getElementById(metas), document.getElementById(metaCollection)], {
+          isContainer: function (el) {
+            return el.classList.contains('meta');
+          },
+          copy: function (el, source) {
+            return source === document.getElementById(metas)
+          },
+          accepts: function (el, target) {
+            return target !== document.getElementById(metas)
+          },
+          moves: function (el, container, handle) {
+            return handle.classList.contains('handle');
+          }
+        });
+      }
     });
 
-    function allowDrop(ev) {
-      ev.preventDefault();
-    }
-
-    function drag(ev) {
-      ev.dataTransfer.setData("text", ev.target.id);
-    }
-
-    function drop(ev) {
-      ev.preventDefault();
-      var data = ev.dataTransfer.getData("text");
-      ev.target.appendChild(document.getElementById(data));
-    }
+    
 
   </script>
 
