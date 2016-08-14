@@ -12,27 +12,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="typed-meta">
   <template>
+    <style type="text/css">
+      .hidden
+      {
+        display: none;
+      }
 
-<style>
+      #metaIcon, #metaName
+      {
+        float: left;
+      }
 
-  .handle
-  {
-    padding: 0 5px;
-    margin-right: 5px;
-    background-color: rgba(0, 0, 0, 0.4);
-    cursor: move;
-  }
+      #metaInput
+      {
+        padding: 10px;
+      }
 
-  #metaTemplate
-  {
-  }
+    </style>
 
-</style>
+    <div id="meta">
+      <div id="metaIcon"></div>
+      <div id="metaName"></div>
+      <div id="metaInput" class="hidden"></div>
+    </div>
 
-    <dir>
-      <span class="handle">+</span>
-      <div id="metaTemplate"></div>
-    </dir>
+
   </template>
 
   <script>
@@ -42,15 +46,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'typed-meta',
 
       properties: {
-        metaType: String
+        metaType: String,
+        metaIconTemplate:{},
+        metaNameTemplate:{},
+        metaInputConfigurationTemplate:{}
       },
-      behaviors: [ Polymer.Templatizer ],
       ready: function() {
-        var template = Polymer.dom(this).querySelector('template');
-        this.templatize(template);
 
-        var itemNode = this.stamp();
-            this.$.metaTemplate.appendChild(itemNode.root);
+        this.metaIconTemplate = Polymer.dom(this).querySelector('meta-icon');
+        this.$.metaIcon.appendChild(this.metaIconTemplate);
+
+        this.metaNameTemplate = Polymer.dom(this).querySelector('meta-name');
+        this.$.metaName.appendChild(this.metaNameTemplate);
+
+        this.metaInputConfigurationTemplate = Polymer.dom(this).querySelector('meta-input-configuration');
+        this.$.metaInput.appendChild(this.metaInputConfigurationTemplate);
+      },
+      showMetaInputConfigurationTemplate: function()
+      {
+        this.$.metaInput.classList.remove("hidden");
       }
 
     });
