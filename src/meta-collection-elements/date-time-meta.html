@@ -10,14 +10,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-date-picker/paper-date-picker.html">
+<link rel="import" href="../../bower_components/paper-time-picker/paper-time-picker.html">
 <link rel="import" href="typed-meta.html">
 
 <dom-module id="date-time-meta">
     <template>
-    <typed-meta metaType="String">
-      <template>
-        <iron-icon icon="icons:perm-contact-calendar"></iron-icon> DateTime
-      </template>
+    <typed-meta meta-type="DateTime" value="{{value}}">
+      <meta-icon>
+        <iron-icon icon="icons:date-range"></iron-icon>
+      </meta-icon>
+      <meta-input-configuration>
+        <paper-date-picker></paper-date-picker>
+        <paper-time-picker></paper-time-picker>
+      </meta-input-configuration>
+    </typed-meta>
     </typed-meta>
   </template>
 

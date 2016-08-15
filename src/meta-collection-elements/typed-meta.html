@@ -9,6 +9,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 
@@ -21,7 +23,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background-color: #f3f3f3;
         border: 1px solid #dedede;
         font-size: 18px;
-        cursor: pointer;
         -webkit-tap-highlight-color: rgba(0,0,0,0);
         width: 100%;
         text-align: left;
@@ -32,9 +33,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: none;
       }
 
-      #metaIcon, #metaName
+      .drag-handle
       {
-        float: left;
+        cursor: move;
+        cursor: -webkit-grabbing;
       }
 
       #metaInput
@@ -54,6 +56,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <button class="heading" on-click="toggle">
+      <span class="drag-handle">
+        <iron-icon icon="editor:drag-handle"></iron-icon>
+      </span>
       <span id="metaIcon"></span>
       <span id="type"></span>
     </button>
