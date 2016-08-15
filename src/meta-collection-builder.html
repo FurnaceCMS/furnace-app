@@ -10,6 +10,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="../bower_components/polymer-sortablejs/polymer-sortablejs.html">
 
 <link rel="import" href="meta-collection-elements/string-meta.html">
 <link rel="import" href="meta-collection-elements/int-meta.html">
@@ -19,18 +22,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style type="text/css">
 
-      #content-wrapper{
-        display:table;
-        width: 80%;
-        min-width: 1100px;
-        max-width: 1300px;
-        position: relative;
-        margin: 20px auto 0 auto;
-        display:table;
-      }
-
       #content{
-        display:table-row;
+        @apply(--layout-horizontal);
       }
 
       #content>div{
@@ -38,53 +31,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       #metaTypes{
-        width:200px;
         background:yellow;
+        display: inline-block;
+        @apply(--layout-flex);
+        
       }
 
       #metaCollection{
         background:blue;
-      }
-
-      #metaCollectionSortable
-      {
         display: inline-block;
         min-height: 100px;
+        @apply(--layout-flex-3);
       }
 
-      #metaTypesSortable > *
+      #metaTypes > *, #metaCollection > *
       {
-        width:190px;
+        width: 100%;
         display: inline-block; 
-        padding-left: 10px;
-        cursor: move;
-      }
 
-      #metaTypesSortable
-      {
-        width:200px;
-        display: inline-block;
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none;   /* Chrome/Safari/Opera */
+        -khtml-user-select: none;    /* Konqueror */
+        -moz-user-select: none;      /* Firefox */
+        -ms-user-select: none;       /* Internet Explorer/Edge */
+        user-select: none;
       }
 
     </style>
 
 
-    <div id="content-wrapper">
-      <div id="content">
-        <div id="metaTypes">
-          <sortable-js id="metaTypesSortable">
-              <string-meta></string-meta>
-              <div>test</div>
-          </sortable-js>  
-        </div>
-        <div id="metaCollection">
-          <sortable-js id="metaCollectionSortable">
-            &nbsp;
-          </sortable-js>
-        </div>
-      </div>
+    <div id="content">
+      <sortable-js id="metaTypes">
+        <string-meta></string-meta>
+        <int-meta></int-meta>
+      </sortable-js>  
+      <sortable-js id="metaCollection">
+      </sortable-js>
     </div>
-
 
   </template>
 
@@ -95,25 +78,55 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'meta-collection-builder',
       ready: function() {
 
-        this.$.metaTypesSortable.group = {
-          name: this.$.metaTypesSortable.id,
+        this.$.metaTypes.group = {
+          name: this.$.metaTypes.group,
           pull: 'clone'
         };
 
-        this.$.metaTypesSortable.sort = false;
+        this.$.metaTypes.sort = false;
+        this.$.metaTypes.animation= 150;
 
-        this.$.metaCollectionSortable.group = {
-          name: this.$.metaCollectionSortable.id, 
-          put: [this.$.metaTypesSortable.group.name]
+        this.$.metaCollection.group = {
+          name: this.$.metaCollection.group, 
+          put: [this.$.metaTypes.group.name]
         };
 
+        this.$.metaCollection.animation= 150;
+
         this.$.metaCollection.addEventListener('add', this.addMeta);
+        this.$.metaCollection.addEventListener('start', this.draggingStart);
+        this.$.metaCollection.addEventListener('end', this.draggingEnd);
       },
       addMeta: function(event){
         if(event.item)
         {
           var typedMeta = event.item.shadowRoot.querySelector('typed-meta');
           typedMeta.showMetaInputConfigurationTemplate();
+        }
+      },
+      draggingStart: function(event){
+        if(event.item)
+        {
+          var openMetas = this.openMetas = [];
+          event.currentTarget.childNodes.forEach(function(entry) {
+            if(entry.nodeName != "#text")
+            {
+              var typedMeta = entry.shadowRoot.querySelector('typed-meta');
+              if(typedMeta.isOpened())
+              {
+                openMetas.push(typedMeta);
+                typedMeta.sortStart();
+              }
+            }
+          });
+        }
+      },
+      draggingEnd: function(event){
+        if(event.item)
+        {
+          this.openMetas.forEach(function(entry) {
+            entry.sortEnd();
+          });
         }
       }
     });

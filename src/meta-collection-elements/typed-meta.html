@@ -9,10 +9,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
 
 <dom-module id="typed-meta">
   <template>
     <style type="text/css">
+      .heading {
+        padding: 10px 15px;
+        margin-top: 20px;
+        background-color: #f3f3f3;
+        border: 1px solid #dedede;
+        font-size: 18px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        width: 100%;
+        text-align: left;
+      }
+
       .hidden
       {
         display: none;
@@ -28,14 +42,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 10px;
       }
 
+      .content
+      {
+        padding: 15px;
+        border: 1px solid #dedede;
+        border-top: none;
+        @apply(--shadow-elevation-2dp);
+        background-color: #f3f3f3;
+      }
+
     </style>
 
-    <div id="meta">
-      <div id="metaIcon"></div>
-      <div id="metaName"></div>
-      <div id="metaInput" class="hidden"></div>
-    </div>
+    <button class="heading" on-click="toggle">
+      <span id="metaIcon"></span>
+      <span id="type"></span>
+    </button>
 
+    <iron-collapse id="meta">
+      <div class="content">
+        <div id="metaInput" class="hidden">
+          <paper-input id="name" label="Meta Name"></paper-input>
+        </div>
+      </div>
+    </iron-collapse>
 
   </template>
 
@@ -46,26 +75,58 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'typed-meta',
 
       properties: {
-        metaType: String,
+        metaType:String,
         metaIconTemplate:{},
         metaNameTemplate:{},
-        metaInputConfigurationTemplate:{}
+        metaInputConfigurationTemplate:{},
+        toggleEnabled:false,
+        name: String,
+        dateCreated: Date,
+        lastUpdated: Date
       },
       ready: function() {
 
         this.metaIconTemplate = Polymer.dom(this).querySelector('meta-icon');
         this.$.metaIcon.appendChild(this.metaIconTemplate);
 
-        this.metaNameTemplate = Polymer.dom(this).querySelector('meta-name');
-        this.$.metaName.appendChild(this.metaNameTemplate);
-
         this.metaInputConfigurationTemplate = Polymer.dom(this).querySelector('meta-input-configuration');
         this.$.metaInput.appendChild(this.metaInputConfigurationTemplate);
+
+        var typeText = document.createTextNode(this.metaType)
+        this.$.type.appendChild(typeText);
+        
       },
       showMetaInputConfigurationTemplate: function()
       {
         this.$.metaInput.classList.remove("hidden");
+        this.toggleEnabled = true;
+      },
+      hideMetaInputConfigurationTemplate: function()
+      {
+        this.$.metaInput.classList.add("hidden");
+      },
+      toggle: function()
+      {
+        if(this.toggleEnabled)
+        {
+          this.$.meta.toggle();
+        }
+      },
+      isOpened: function()
+      {
+        return this.$.meta.opened;
+      },
+      sortStart: function()
+      {
+        this.hideMetaInputConfigurationTemplate();
+        this.$.meta.hide();
+      },
+      sortEnd: function()
+      {
+        this.showMetaInputConfigurationTemplate();
+        this.$.meta.show();
       }
+
 
     });
   </script>

@@ -14,20 +14,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="typed-meta.html">
 
-
-
 <dom-module id="string-meta">
   <template>
-    <typed-meta metaType="String">
+    <typed-meta meta-type="String" value="{{value}}">
       <meta-icon>
         <iron-icon icon="editor:text-fields"></iron-icon>
       </meta-icon>
-      <meta-name>
-        Text
-      </meta-name>
       <meta-input-configuration>
-        <paper-input id="name" label="string meta default"></paper-input>
-        <paper-input id="default" label="string meta default"></paper-input>
+        <paper-input id="value" label="Value"></paper-input>
       </meta-input-configuration>
     </typed-meta>
   </template>
@@ -35,9 +29,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
 
     Polymer({
-
       is: 'string-meta'
-
     });
   </script>
 
