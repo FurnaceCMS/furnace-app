@@ -61,7 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
     <div id="content">
-      <sortable-js id="metaTypes" handle="drag-handle">
+      <sortable-js id="metaTypes" handle=".drag-handle">
         <string-meta></string-meta>
         <int-meta></int-meta>
         <date-time-meta></date-time-meta>
@@ -79,6 +79,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'meta-collection-builder',
       ready: function() {
 
+        Sortable.utils.closest = this._closest;
+
         this.$.metaTypes.group = {
           name: this.$.metaTypes.group,
           pull: 'clone'
@@ -93,10 +95,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         };
 
         this.$.metaCollection.animation= 150;
-        this.$.metaCollection.handle = ".drag-handle";
 
         this.$.metaCollection.addEventListener('add', this.addMeta);
         this.$.metaCollection.addEventListener('start', this.draggingStart);
+        this.$.metaCollection.addEventListener('end', this.draggingEnd);
         this.$.metaCollection.addEventListener('end', this.draggingEnd);
       },
       addMeta: function(event){
@@ -132,8 +134,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       }
     });
-
-    
 
   </script>
 
