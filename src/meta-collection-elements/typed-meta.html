@@ -59,13 +59,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div class="heading" >
-      <iron-icon class="drag-handle" icon="icons:reorder"></iron-icon>
+      <iron-icon class="drag-handle" icon="icons:open-with"></iron-icon>
       <span id="metaIcon"></span>
       <span id="type"></span>
       <button id="settings" on-click="toggle" class="hidden">
-        {{metaSettingsToggleLabel}}
+        {{metaSettingsState}} {{name}} Settings
       </button>
-      <i id="delete" class="delete hidden">✖</i>
+      <iron-icon id="delete" class="delete hidden" icon="icons:delete"></iron-icon>
     </div>
 
     <iron-collapse id="metaSettings">
@@ -99,11 +99,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           notify: true
         },
-        metaSettingsToggleLabel:
+        metaSettingsState:
         {
           type: String,
           notify: true,
-          value: "Open Settings"
+          value: "Open"
         },
         dateCreated: Date,
         lastUpdated: Date
@@ -137,14 +137,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if(this.toggleEnabled)
         {
           this.$.metaSettings.toggle();
-          if(this.isOpened())
-          {
-            this.metaSettingsToggleLabel = "Close " + this.name + " Settings";
-          }
-          else
-          {
-            this.metaSettingsToggleLabel = "Open " + this.name + " Settings"; 
-          }
+          this.metaSettingsState = this.$.metaSettings.opened ? "Close" : "Open"; 
         }
       },
       isOpened: function()
