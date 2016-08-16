@@ -11,16 +11,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+
 <link rel="import" href="typed-meta.html">
 
-<dom-module id="int-meta">
+<dom-module id="integer-meta">
   <template>
     <typed-meta meta-type="Interger" value="{{value}}">
       <meta-icon>
         <iron-icon icon="image:exposure-zero"></iron-icon>
       </meta-icon>
       <meta-input-configuration>
-        <paper-input id="value" label="Value"></paper-input>
+        <paper-input 
+          id="value" 
+          label="Enter Value" 
+          auto-validate type="number" 
+          pattern="[0-9]*" 
+          error-message="Integers Only"
+          on-value-changed="valueChanged"></paper-input>
       </meta-input-configuration>
     </typed-meta>
   </template>
@@ -29,8 +37,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     Polymer({
 
-      is: 'int-meta'
-
+      is: 'integer-meta',
+      valueChanged: function(event) {
+        //event.detail.value
+      },
     });
   </script>
 

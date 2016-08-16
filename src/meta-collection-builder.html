@@ -15,7 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer-sortablejs/polymer-sortablejs.html">
 
 <link rel="import" href="meta-collection-elements/string-meta.html">
-<link rel="import" href="meta-collection-elements/int-meta.html">
+<link rel="import" href="meta-collection-elements/integer-meta.html">
 <link rel="import" href="meta-collection-elements/date-time-meta.html">
 
 <dom-module id="meta-collection-builder">
@@ -63,10 +63,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div id="content">
       <sortable-js id="metaTypes" handle=".drag-handle">
         <string-meta></string-meta>
-        <int-meta></int-meta>
+        <integer-meta></integer-meta>
         <date-time-meta></date-time-meta>
       </sortable-js>  
-      <sortable-js id="metaCollection" handle=".drag-handle">
+      <sortable-js id="metaCollection" handle=".drag-handle" filter=".delete">
       </sortable-js>
     </div>
 
@@ -99,7 +99,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.metaCollection.addEventListener('add', this.addMeta);
         this.$.metaCollection.addEventListener('start', this.draggingStart);
         this.$.metaCollection.addEventListener('end', this.draggingEnd);
-        this.$.metaCollection.addEventListener('end', this.draggingEnd);
+        this.$.metaCollection.addEventListener('filter', this.filter);
       },
       addMeta: function(event){
         if(event.item)
@@ -131,6 +131,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.openMetas.forEach(function(entry) {
             entry.sortEnd();
           });
+        }
+      },
+      filter:function(event)
+      {
+        if(event.item)
+        {
+          event.from.removeChild(event.item);
         }
       }
     });

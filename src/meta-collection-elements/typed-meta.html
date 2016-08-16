@@ -10,21 +10,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 
-<dom-module id="typed-meta">
+<dom-module is="dom-bind" id="typed-meta">
   <template>
     <style type="text/css">
       .heading {
         padding: 10px 15px;
-        margin-top: 20px;
         background-color: #f3f3f3;
         border: 1px solid #dedede;
         font-size: 18px;
         -webkit-tap-highlight-color: rgba(0,0,0,0);
-        width: 100%;
         text-align: left;
       }
 
@@ -37,6 +34,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       {
         cursor: move;
         cursor: -webkit-grabbing;
+      }
+
+      .delete
+      {
+        cursor: pointer;
+        float: right;
       }
 
       #metaInput
@@ -55,15 +58,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
-    <button class="heading drag-handle" on-click="toggle">
+    <div class="heading" >
+      <iron-icon class="drag-handle" icon="icons:reorder"></iron-icon>
       <span id="metaIcon"></span>
       <span id="type"></span>
-    </button>
+      <button id="settings" on-click="toggle" class="hidden">
+        {{metaSettingsToggleLabel}}
+      </button>
+      <i id="delete" class="delete hidden">✖</i>
+    </div>
 
-    <iron-collapse id="meta">
+    <iron-collapse id="metaSettings">
       <div class="content">
         <div id="metaInput" class="hidden">
-          <paper-input id="name" label="Meta Name"></paper-input>
+          <paper-input 
+            id="meatName" 
+            label="Meta Name" 
+            required
+            value="{{name}}"
+            ></paper-input>
         </div>
       </div>
     </iron-collapse>
@@ -71,7 +84,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
-
     Polymer({
 
       is: 'typed-meta',
@@ -82,7 +94,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         metaNameTemplate:{},
         metaInputConfigurationTemplate:{},
         toggleEnabled:false,
-        name: String,
+        name: 
+        {
+          type: String,
+          notify: true
+        },
+        metaSettingsToggleLabel:
+        {
+          type: String,
+          notify: true,
+          value: "Open Settings"
+        },
         dateCreated: Date,
         lastUpdated: Date
       },
@@ -101,6 +123,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       showMetaInputConfigurationTemplate: function()
       {
         this.$.metaInput.classList.remove("hidden");
+        this.$.delete.classList.remove("hidden");
+        this.$.settings.classList.remove("hidden");
+        
         this.toggleEnabled = true;
       },
       hideMetaInputConfigurationTemplate: function()
@@ -111,25 +136,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       {
         if(this.toggleEnabled)
         {
-          this.$.meta.toggle();
+          this.$.metaSettings.toggle();
+          if(this.isOpened())
+          {
+            this.metaSettingsToggleLabel = "Close " + this.name + " Settings";
+          }
+          else
+          {
+            this.metaSettingsToggleLabel = "Open " + this.name + " Settings"; 
+          }
         }
       },
       isOpened: function()
       {
-        return this.$.meta.opened;
+        return this.$.metaSettings.opened;
       },
       sortStart: function()
       {
         this.hideMetaInputConfigurationTemplate();
-        this.$.meta.hide();
+        this.$.metaSettings.hide();
       },
       sortEnd: function()
       {
         this.showMetaInputConfigurationTemplate();
-        this.$.meta.show();
+        this.$.metaSettings.show();
       }
-
-
     });
   </script>
 
