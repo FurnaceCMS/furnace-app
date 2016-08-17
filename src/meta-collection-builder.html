@@ -89,6 +89,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.metaTypes.sort = false;
         this.$.metaTypes.animation= 150;
 
+        this.$.metaTypes.addEventListener('start', this.draggingStart);
+
         this.$.metaCollection.group = {
           name: this.$.metaCollection.group, 
           put: [this.$.metaTypes.group.name]
@@ -96,52 +98,59 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         this.$.metaCollection.animation= 150;
 
-        this.$.metaCollection.addEventListener('add', this.addMeta);
-        this.$.metaCollection.addEventListener('start', this.draggingStart);
-        this.$.metaCollection.addEventListener('end', this.draggingEnd);
-        this.$.metaCollection.addEventListener('filter', this.filter);
+        this.metaCollection.init(this.$.metaCollection);
+        
       },
-      addMeta: function(event){
-        if(event.item)
-        {
-          var typedMeta = event.item.shadowRoot.querySelector('typed-meta');
-          typedMeta.showMetaInputConfigurationTemplate();
-        }
-      },
-      draggingStart: function(event){
-        if(event.item)
-        {
-          var openMetas = this.openMetas = [];
-          event.currentTarget.childNodes.forEach(function(entry) {
-            if(entry.nodeName != "#text")
-            {
-              var typedMeta = entry.shadowRoot.querySelector('typed-meta');
-              if(typedMeta.isOpened())
-              {
-                openMetas.push(typedMeta);
-                typedMeta.sortStart();
-              }
-            }
-          });
-        }
-      },
-      draggingEnd: function(event){
-        if(event.item)
-        {
-          this.openMetas.forEach(function(entry) {
-            entry.sortEnd();
-          });
-        }
-      },
-      filter:function(event)
+      metaCollection: 
       {
-        if(event.item)
+        init: function(metaCollection)
         {
-          event.from.removeChild(event.item);
+        metaCollection.addEventListener('add', this.addMeta);
+        metaCollection.addEventListener('filter', this.deleteMeta);
+        metaCollection.addEventListener('start', this.startSort);
+        metaCollection.addEventListener('end', this.endSort);
+        },
+        addMeta: function(event){
+          if(event.item)
+          {
+            var typedMeta = event.item.shadowRoot.querySelector('typed-meta');
+            typedMeta.showMetaInputConfigurationTemplate();
+          }
+        },
+        startSort: function(event){
+          if(event.item)
+          {
+            var openMetas = this.openMetas = [];
+            event.currentTarget.childNodes.forEach(function(entry) {
+              if(entry.nodeName != "#text")
+              {
+                var typedMeta = entry.shadowRoot.querySelector('typed-meta');
+                if(typedMeta.isOpened())
+                {
+                  openMetas.push(typedMeta);
+                  typedMeta.sortStart();
+                }
+              }
+            });
+          }
+        },
+        endSort: function(event){
+          if(event.item)
+          {
+            this.openMetas.forEach(function(entry) {
+              entry.sortEnd();
+            });
+          }
+        },
+        deleteMeta: function(event)
+        {
+          if(event.item)
+          {
+            event.from.removeChild(event.item);
+          }
         }
       }
     });
-
   </script>
 
 </dom-module>

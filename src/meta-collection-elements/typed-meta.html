@@ -56,15 +56,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background-color: #f3f3f3;
       }
 
+      .headding
+      {
+        font-weight: bold;
+      }
+
     </style>
 
     <div class="heading" >
       <iron-icon class="drag-handle" icon="icons:open-with"></iron-icon>
       <span id="metaIcon"></span>
-      <span id="type"></span>
+      <span id="type">{{metaType}}</span>
       <button id="settings" on-click="toggle" class="hidden">
-        {{metaSettingsState}} {{name}} Settings
+        {{metaSettingsState}} Settings
       </button>
+      <span id="name" class="hidden">
+        <span class="headding">Name:</span> 
+        {{metaName}}
+      </span>
+      <span id="value" class="hidden">
+        <span class="headding">Value:</span> 
+        {{metaValue}}
+      </span>
       <iron-icon id="delete" class="delete hidden" icon="icons:delete"></iron-icon>
     </div>
 
@@ -75,7 +88,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             id="meatName" 
             label="Meta Name" 
             required
-            value="{{name}}"
+            value="{{metaName}}"
             ></paper-input>
         </div>
       </div>
@@ -93,8 +106,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         metaIconTemplate:{},
         metaNameTemplate:{},
         metaInputConfigurationTemplate:{},
-        toggleEnabled:false,
-        name: 
+        metaInputConfigurationEnabled:false,
+        metaName: 
         {
           type: String,
           notify: true
@@ -106,7 +119,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: "Open"
         },
         dateCreated: Date,
-        lastUpdated: Date
+        lastUpdated: Date,
+        metaValue:
+        {
+          type: String,
+          notify: true
+        }
       },
       ready: function() {
 
@@ -115,9 +133,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         this.metaInputConfigurationTemplate = Polymer.dom(this).querySelector('meta-input-configuration');
         this.$.metaInput.appendChild(this.metaInputConfigurationTemplate);
-
-        var typeText = document.createTextNode(this.metaType)
-        this.$.type.appendChild(typeText);
         
       },
       showMetaInputConfigurationTemplate: function()
@@ -125,8 +140,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.metaInput.classList.remove("hidden");
         this.$.delete.classList.remove("hidden");
         this.$.settings.classList.remove("hidden");
+        this.$.value.classList.remove("hidden");
+        this.$.name.classList.remove("hidden");
+
         
-        this.toggleEnabled = true;
+        this.metaInputConfigurationEnabled = true;
       },
       hideMetaInputConfigurationTemplate: function()
       {
@@ -134,7 +152,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       toggle: function()
       {
-        if(this.toggleEnabled)
+        if(this.metaInputConfigurationEnabled)
         {
           this.$.metaSettings.toggle();
           this.metaSettingsState = this.$.metaSettings.opened ? "Close" : "Open"; 

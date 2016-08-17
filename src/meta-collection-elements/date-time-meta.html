@@ -15,16 +15,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="typed-meta.html">
 
 <dom-module id="date-time-meta">
-    <template>
-    <typed-meta meta-type="DateTime" value="{{value}}">
+  <template>
+    <typed-meta is="typedMeta" meta-type="DateTime">
       <meta-icon>
         <iron-icon icon="icons:date-range"></iron-icon>
       </meta-icon>
       <meta-input-configuration>
-        <paper-date-picker></paper-date-picker>
-        <paper-time-picker></paper-time-picker>
+        <paper-date-picker id="date"></paper-date-picker>
+        <paper-time-picker id="time"></paper-time-picker>
       </meta-input-configuration>
-    </typed-meta>
     </typed-meta>
   </template>
 
@@ -32,7 +31,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     Polymer({
 
-      is: 'date-time-meta'
+      is: 'date-time-meta',
+      attached: function() {
+        this.listen(this.$.date, 'date-changed', 'valueChanged');
+        this.listen(this.$.time, 'time-changed', 'valueChanged');
+      },
+      detached: function() {
+        this.unlisten(this.$.date, 'date-changed', 'valueChanged');
+        this.unlisten(this.$.time, 'time-changed', 'valueChanged');
+      },
+      valueChanged: function() {
+        var date = this.$.date.date;
+        var hour = this.$.time.hour;
+        var minute = this.$.time.minute;
+
+        var dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, minute);
+
+        var typedMeta = this.shadowRoot.querySelector('typed-meta');
+        typedMeta.metaValue = dateTime.toLocaleString();
+      }
 
     });
   </script>

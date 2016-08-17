@@ -16,20 +16,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="string-meta">
   <template>
-    <typed-meta meta-type="String" value="{{value}}">
+    <typed-meta id="typedMeta" meta-type="String">
       <meta-icon>
         <iron-icon icon="editor:text-fields"></iron-icon>
       </meta-icon>
       <meta-input-configuration>
-        <paper-input id="value" label="Value"></paper-input>
+        <paper-input 
+          id="value" 
+          label="Value" 
+          value="{{metaValue}}"
+          on-value-changed="valueChanged"></paper-input>
       </meta-input-configuration>
     </typed-meta>
   </template>
 
   <script>
-
     Polymer({
-      is: 'string-meta'
+      is: 'string-meta',
+      valueChanged: function(event) {
+        this.$.typedMeta.metaValue = event.detail.value;
+      }
     });
   </script>
 
