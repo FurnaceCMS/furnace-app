@@ -16,9 +16,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="date-time-meta">
   <template>
+    <style type="text/css">
+      .icon
+      {
+        position: inherit;
+      }
+    </style>
     <typed-meta is="typedMeta" meta-type="DateTime">
       <meta-icon>
-        <iron-icon icon="icons:date-range"></iron-icon>
+        <iron-icon class="icon" icon="icons:date-range"></iron-icon>
       </meta-icon>
       <meta-input-configuration>
         <paper-date-picker id="date"></paper-date-picker>

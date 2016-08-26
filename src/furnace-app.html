@@ -68,8 +68,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding-left: 32px;
       }
 
-
-
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -86,16 +84,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- Drawer content -->
       <app-drawer id="mainNavDrawer" swipe-open>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="meta-collection-builder" href="/meta-collection-builder">Meta Collection Builder</a>
-           <a name="view2" href="/view2">view2</a>
+          <a name="new-meta-collection" href="/new-meta-collection">New Meta Collection</a>
+          <a name="meta-collection-listing" href="/meta-collection-listing">Meta Collection Listing</a>
         </iron-selector>
       </app-drawer>
      
 
       <!-- Main content -->
     <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
-      <meta-collection-builder name="meta-collection-builder"></meta-collection-builder>
-      <view2></view2>
+      <new-meta-collection name="new-meta-collection"></new-meta-collection>
+      <meta-collection-listing name="meta-collection-listing"></meta-collection-listing>
     </iron-pages>
 
   </template>
@@ -120,7 +118,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _routePageChanged: function(page) {
-        this.page = page || 'meta-collection-builder';
+        this.page = page || 'new-meta-collection';
         this.$.mainNavDrawer.close();
       },
 

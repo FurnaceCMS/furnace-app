@@ -61,10 +61,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: bold;
       }
 
+      .icon
+      {
+        position: inherit;
+      }
+
     </style>
 
     <div class="heading" >
-      <iron-icon class="drag-handle" icon="icons:open-with"></iron-icon>
+      <iron-icon class="drag-handle icon" icon="icons:open-with"></iron-icon>
       <span id="metaIcon"></span>
       <span id="type">{{metaType}}</span>
       <button id="settings" on-click="toggle" class="hidden">
