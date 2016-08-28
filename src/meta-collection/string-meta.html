@@ -41,6 +41,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'string-meta',
       valueChanged: function(event) {
         this.$.typedMeta.metaValue = event.detail.value;
+      },
+      loadValue: function(value)
+      {
+        this.$.value.value = value;
       }
     });
   </script>

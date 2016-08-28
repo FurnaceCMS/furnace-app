@@ -55,6 +55,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         var typedMeta = this.shadowRoot.querySelector('typed-meta');
         typedMeta.metaValue = dateTime.toLocaleString();
+      },
+      loadValue: function(value)
+      {
+        var date = new Date(value);
+        this.$.date.date = date;
+        this.$.time.time = date.getHours() + ':' + date.getMinutes();
       }
 
     });
