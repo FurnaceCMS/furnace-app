@@ -59,6 +59,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
+    <iron-ajax 
+      id="metaCollectionSource"
+      on-response="metaCollectionLoaded"
+      auto></iron-ajax>
 
     <div id="content">
       <sortable-js id="metaTypes" handle=".drag-handle">
@@ -78,7 +82,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       is: 'meta-collection-builder',
       properties: {
-        metaJson: String
+        metaJson: String,
+        metaCollectionSourceUrl: 
+        {
+          type: String,
+          value: null
+        }
       },
       ready: function() {
 
@@ -102,7 +111,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.metaCollection.animation= 150;
 
         this.metaCollection.init(this.$.metaCollection);
+
+        if(this.metaCollectionSourceUrl != null)
+        {
+          this.$.metaCollectionSource.url = metaCollectionSourceUrl;
+        }
         
+      },
+      metaCollectionLoaded: function(data)
+      {
+        var metaCollectionResponse = data.detail.response;
+        var metaCollection = this.$.metaCollection;
+        var metaTypes = this.$.metaTypes;
+
+        while (metaCollection.firstChild) {
+            metaCollection.removeChild(metaCollection.firstChild);
+        }
+
+        var metaTypesMaping = {};
+        metaTypesMaping['Furnace.Core.Data.Play.Metas.Typed.StringMeta'] = 'string-meta';
+        metaTypesMaping['Furnace.Core.Data.Play.Metas.Typed.IntMeta'] = 'integer-meta';
+        metaTypesMaping['Furnace.Core.Data.Play.Metas.Typed.DateTimeMeta'] = 'date-time-meta';
+
+        metaCollectionResponse.Metas.forEach(function(item, index) {
+          var meta = metaTypes.querySelector(metaTypesMaping[item.Type]).cloneNode(true);
+          metaCollection.appendChild(meta);
+
+          var typedMeta = meta.shadowRoot.querySelector('typed-meta');
+          typedMeta.showMetaInputConfigurationTemplate();
+
+          typedMeta.metaName = item.Name;
+          typedMeta.metaValue = item.Value;
+
+        });
       },
       metaCollection: 
       {

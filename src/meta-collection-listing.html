@@ -9,9 +9,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="meta-collection/meta-collection-builder.html">
 
 <dom-module id="meta-collection-listing">
 
@@ -23,33 +25,49 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         cursor: pointer;
       };
     }
-      
+
+    #content{
+      @apply(--layout-horizontal);
+    }
+
+    iron-list
+    {
+      @apply(--layout-flex);
+    }
+
+    meta-collection-builder
+    {
+      @apply(--layout-flex-5);
+    }
     </style>
 
     <iron-ajax
       auto
       url="/meta-collections-data/meta-collections.json"
-      handle-as="json"
-      last-response="{{metaCollections}}"
-      debounce-duration="300"></iron-ajax>
+      last-response="{{metaCollections}}"></iron-ajax>
 
-    <paper-listbox items="[[metaCollections]]" as="item">
-    <paper-item>[[item.Name]]</paper-item>
-      <template>
-        <paper-item>[[item.Name]]</paper-item>
-      </template>
-    </paper-listbox>
-   
+    <div id="content">
+      <iron-list items="[[metaCollections]]" as="item">
+          <template>
+            <paper-item on-tap="editMetaCollectionTap">
+              [[item.Name]]
+              <input class="itemId" type="hidden" value="[[item.Id]]" />
+            </paper-item>
+          </template>
+      </iron-list>
+      <meta-collection-builder id="editMetaCollections"></meta-collection-builder>
+    </div>
+    
   </template>
 
   <script>
 
     Polymer({
-
       is: 'meta-collection-listing',
-      eventsDatasourceResponse: function(e, request) {
-       }
-
+      editMetaCollectionTap: function(event, details, sender) {
+        var itemId = event.target.querySelector('.itemId').value
+        this.$.editMetaCollections.$.metaCollectionSource.url = "/meta-collections-data/" + itemId + ".json";
+      }
     });
 
   </script>
