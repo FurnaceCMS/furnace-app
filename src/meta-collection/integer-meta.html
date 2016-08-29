@@ -17,9 +17,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="integer-meta">
   <template>
-    <typed-meta id="typedMeta" meta-type="Interger" metaValue="{{value}}">
+    <typed-meta id="typedMeta" type="Interger" value="{{value}}">
       <meta-icon>
-        #
+        <iron-icon class="icon" icon="image:filter-1"></iron-icon>
       </meta-icon>
       <meta-input-configuration>
         <paper-input 
@@ -39,7 +39,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       is: 'integer-meta',
       valueChanged: function(event) {
-        this.$.typedMeta.metaValue = event.detail.value;
+        this.$.typedMeta.value = event.detail.value;
       },
       loadValue: function(value)
       {

@@ -19,10 +19,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style type="text/css">
       .icon
       {
-        position: inherit;
+        position: inherit;s
       }
     </style>
-    <typed-meta id="typedMeta" meta-type="String">
+    <typed-meta id="typedMeta" type="String">
       <meta-icon>
         <iron-icon class="icon" icon="editor:text-fields"></iron-icon>
       </meta-icon>
@@ -40,7 +40,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'string-meta',
       valueChanged: function(event) {
-        this.$.typedMeta.metaValue = event.detail.value;
+        this.$.typedMeta.value = event.detail.value;
       },
       loadValue: function(value)
       {

@@ -64,6 +64,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       on-response="metaCollectionLoaded"
       auto></iron-ajax>
 
+      <iron-ajax 
+      id="metaTypeMappingSource"
+      url="/meta-collections-data/meta-type-maping.json"
+      last-response="{{metaTypeMapping}}"
+      auto></iron-ajax>
+
     <div id="content">
       <sortable-js id="metaTypes" handle=".drag-handle">
         <string-meta></string-meta>
@@ -128,17 +134,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             metaCollection.removeChild(metaCollection.firstChild);
         }
 
-        var metaTypesMaping = {};
-        metaTypesMaping['Furnace.Core.Data.Play.Metas.Typed.StringMeta'] = 'string-meta';
-        metaTypesMaping['Furnace.Core.Data.Play.Metas.Typed.IntMeta'] = 'integer-meta';
-        metaTypesMaping['Furnace.Core.Data.Play.Metas.Typed.DateTimeMeta'] = 'date-time-meta';
+        var metaTypesMaping = this.$.metaTypeMappingSource.lastResponse;
 
         metaCollectionResponse.Metas.forEach(function(item, index) {
           var meta = metaTypes.querySelector(metaTypesMaping[item.Type]).cloneNode(true);
           metaCollection.appendChild(meta);
 
           var typedMeta = meta.shadowRoot.querySelector('typed-meta');
-          typedMeta.showMetaInputConfigurationTemplate();
+          typedMeta.showInputConfigurationTemplate();
 
           typedMeta.metaName = item.Name;
           meta.loadValue(item.Value);
@@ -158,7 +161,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           if(event.item)
           {
             var typedMeta = event.item.shadowRoot.querySelector('typed-meta');
-            typedMeta.showMetaInputConfigurationTemplate();
+            typedMeta.showInputConfigurationTemplate();
           }
         },
         startSort: function(event){

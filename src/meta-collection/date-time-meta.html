@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         position: inherit;
       }
     </style>
-    <typed-meta is="typedMeta" meta-type="DateTime">
+    <typed-meta id="typedMeta" type="DateTime">
       <meta-icon>
         <iron-icon class="icon" icon="icons:date-range"></iron-icon>
       </meta-icon>
@@ -53,8 +53,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         var dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, minute);
 
-        var typedMeta = this.shadowRoot.querySelector('typed-meta');
-        typedMeta.metaValue = dateTime.toLocaleString();
+        var meta = this.shadowRoot.querySelector('typed-meta');
+        meta.value = dateTime.toLocaleString();
       },
       loadValue: function(value)
       {

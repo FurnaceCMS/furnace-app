@@ -12,6 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 
 <dom-module is="dom-bind" id="typed-meta">
   <template>
@@ -66,34 +67,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         position: inherit;
       }
 
+      paper-button#settings:hover {
+        background-color: var(--paper-indigo-100);
+      }
+
+      paper-button#settings[active] {
+        background-color: var(--paper-indigo-500);
+        color: white;
+      }
+
     </style>
 
     <div class="heading" >
       <iron-icon class="drag-handle icon" icon="icons:open-with"></iron-icon>
-      <button id="settings" on-click="toggle" class="hidden">
-        {{metaSettingsState}} Settings
-      </button>
-      <span id="metaIcon"></span>
-      <span id="type">{{metaType}}</span>
+      <paper-button id="settings" on-click="toggle" class="hidden" toggles raised noink>Settings</paper-button>
+      <span id="icon"></span>
+      <span id="type">{{type}}</span>
       <span id="name" class="hidden">
         <span class="headding">Name:</span> 
-        {{metaName}}
+        {{name}}
       </span>
       <span id="value" class="hidden">
         <span class="headding">Value:</span> 
-        {{metaValue}}
+        {{value}}
       </span>
       <iron-icon id="delete" class="delete hidden" icon="icons:delete"></iron-icon>
     </div>
 
-    <iron-collapse id="metaSettings">
+    <iron-collapse id="settingsCollapse">
       <div class="content">
-        <div id="metaInput" class="hidden">
+        <div id="input" class="hidden">
           <paper-input 
             id="meatName" 
             label="Meta Name" 
             required
-            value="{{metaName}}"
+            value="{{name}}"
             ></paper-input>
         </div>
       </div>
@@ -107,75 +115,68 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'typed-meta',
 
       properties: {
-        metaType:String,
-        metaIconTemplate:{},
-        metaNameTemplate:{},
-        metaInputConfigurationTemplate:{},
-        metaInputConfigurationEnabled:false,
-        metaName: 
+        type:String,
+        iconTemplate:{},
+        nameTemplate:{},
+        name: 
         {
           type: String,
           notify: true
-        },
-        metaSettingsState:
-        {
-          type: String,
-          notify: true,
-          value: "Open"
         },
         dateCreated: Date,
         lastUpdated: Date,
-        metaValue:
+        value:
         {
           type: String,
           notify: true
-        }
+        },
+        inputConfigurationTemplate:{},
+        inputConfigurationEnabled:false
       },
       ready: function() {
 
-        this.metaIconTemplate = Polymer.dom(this).querySelector('meta-icon');
-        this.$.metaIcon.appendChild(this.metaIconTemplate);
+        this.iconTemplate = Polymer.dom(this).querySelector('meta-icon');
+        this.$.icon.appendChild(this.iconTemplate);
 
-        this.metaInputConfigurationTemplate = Polymer.dom(this).querySelector('meta-input-configuration');
-        this.$.metaInput.appendChild(this.metaInputConfigurationTemplate);
+        this.inputConfigurationTemplate = Polymer.dom(this).querySelector('meta-input-configuration');
+        this.$.input.appendChild(this.inputConfigurationTemplate);
         
       },
-      showMetaInputConfigurationTemplate: function()
+      showInputConfigurationTemplate: function()
       {
-        this.$.metaInput.classList.remove("hidden");
+        this.$.input.classList.remove("hidden");
         this.$.delete.classList.remove("hidden");
         this.$.settings.classList.remove("hidden");
         this.$.value.classList.remove("hidden");
         this.$.name.classList.remove("hidden");
 
         
-        this.metaInputConfigurationEnabled = true;
+        this.inputConfigurationEnabled = true;
       },
-      hideMetaInputConfigurationTemplate: function()
+      hideInputConfigurationTemplate: function()
       {
-        this.$.metaInput.classList.add("hidden");
+        this.$.input.classList.add("hidden");
       },
       toggle: function()
       {
-        if(this.metaInputConfigurationEnabled)
+        if(this.inputConfigurationEnabled)
         {
-          this.$.metaSettings.toggle();
-          this.metaSettingsState = this.$.metaSettings.opened ? "Close" : "Open"; 
+          this.$.settingsCollapse.toggle();
         }
       },
       isOpened: function()
       {
-        return this.$.metaSettings.opened;
+        return this.$.settingsCollapse.opened;
       },
       sortStart: function()
       {
-        this.hideMetaInputConfigurationTemplate();
-        this.$.metaSettings.hide();
+        this.hideInputConfigurationTemplate();
+        this.$.settingsCollapse.hide();
       },
       sortEnd: function()
       {
-        this.showMetaInputConfigurationTemplate();
-        this.$.metaSettings.show();
+        this.showInputConfigurationTemplate();
+        this.$.settingsCollapse.show();
       }
     });
   </script>
