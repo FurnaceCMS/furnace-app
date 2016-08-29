@@ -80,8 +80,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="heading" >
       <iron-icon class="drag-handle icon" icon="icons:open-with"></iron-icon>
-      <paper-button id="settings" on-click="toggle" class="hidden" toggles raised noink>Settings</paper-button>
       <span id="icon"></span>
+      <paper-button id="settings" on-click="toggle" class="hidden" toggles raised noink>Edit</paper-button>
       <span id="type">{{type}}</span>
       <span id="name" class="hidden">
         <span class="headding">Name:</span> 
@@ -98,7 +98,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="content">
         <div id="input" class="hidden">
           <paper-input 
-            id="meatName" 
+            id="metaName" 
             label="Meta Name" 
             required
             value="{{name}}"
