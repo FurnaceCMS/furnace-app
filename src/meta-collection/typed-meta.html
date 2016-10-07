@@ -81,6 +81,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="heading" >
       <iron-icon class="drag-handle icon" icon="icons:open-with"></iron-icon>
       <span id="icon"></span>
+      <iron-icon id="delete" class="delete hidden" icon="icons:delete"></iron-icon>
       <paper-button id="settings" on-click="toggle" class="hidden" toggles raised noink>Edit</paper-button>
       <span id="type">{{type}}</span>
       <span id="name" class="hidden">
@@ -91,7 +92,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <span class="headding">Value:</span> 
         {{value}}
       </span>
-      <iron-icon id="delete" class="delete hidden" icon="icons:delete"></iron-icon>
+      
     </div>
 
     <iron-collapse id="settingsCollapse">
