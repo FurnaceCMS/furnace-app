@@ -1,7 +1,7 @@
 {
-  "name": "app-drawer-template",
+  "name": "furnace-app",
   "authors": [
-    "The Polymer Authors"
+    "Aaron Job"
   ],
   "private": false,
   "dependencies": {
