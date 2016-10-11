@@ -66,7 +66,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <iron-ajax 
       id="metaTypeMappingSource"
-      url="/meta-collections-data/meta-type-maping.json"
       last-response="{{metaTypeMapping}}"
       auto></iron-ajax>
 
@@ -88,7 +87,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       is: 'meta-collection-builder',
       properties: {
-        metaJson: String,
+
         metaCollectionSourceUrl: 
         {
           type: String,
@@ -96,7 +95,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       ready: function() {
-
         Sortable.utils.closest = this._closest;
 
         this.$.metaTypes.group = {

@@ -92,8 +92,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <!-- Main content -->
     <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
-      <new-meta-collection name="new-meta-collection"></new-meta-collection>
-      <meta-collection-listing name="meta-collection-listing"></meta-collection-listing>
+      <new-meta-collection id="newMetaCollection" name="new-meta-collection"></new-meta-collection>
+      <meta-collection-listing id="metaCollectionListing" name="meta-collection-listing"></meta-collection-listing>
     </iron-pages>
 
   </template>
@@ -105,6 +105,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'furnace-app',
 
       properties: {
+
+        meta_type_maping_endpont: String,
+        meta_collections_endpont: String,
 
         page: {
           type: String,
@@ -126,7 +129,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         // load page import on demand.
         this.importHref(
-          this.resolveUrl(page + '.html'), null, null, true);
+        this.resolveUrl(page + '.html'), null, null, true);
+      },
+      attached: function() {
+        this.$.newMetaCollection.meta_type_maping_endpont = this.meta_type_maping_endpont;
+        this.$.newMetaCollection.meta_collections_endpont = this.meta_collections_endpont;
+
+        this.$.metaCollectionListing.meta_type_maping_endpont = this.meta_type_maping_endpont;
+        this.$.metaCollectionListing.meta_collections_endpont = this.meta_collections_endpont;
       },
       ready: function() {
         var mainNavDrawer = this.$.mainNavDrawer;

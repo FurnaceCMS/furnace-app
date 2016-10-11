@@ -43,7 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <iron-ajax
       auto
-      url="/meta-collections-data/meta-collections.json"
+      id="metaCollections"
       last-response="{{metaCollections}}"></iron-ajax>
 
     <div id="content">
@@ -55,7 +55,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </paper-item>
           </template>
       </iron-list>
-      <meta-collection-builder id="editMetaCollections"></meta-collection-builder>
+      <meta-collection-builder id="metaCollectionsBuilder"></meta-collection-builder>
     </div>
     
   </template>
@@ -63,10 +63,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
 
     Polymer({
+      properties: {
+          meta_type_maping_endpont: String,
+          meta_collections_endpont: String
+      },
+
       is: 'meta-collection-listing',
+      attached: function() {
+        this.$.metaCollections.url = this.meta_collections_endpont;
+        this.$.metaCollectionsBuilder.$.metaTypeMappingSource.url = this.meta_type_maping_endpont;
+      },
       editMetaCollectionTap: function(event, details, sender) {
         var itemId = event.target.querySelector('.itemId').value
-        this.$.editMetaCollections.$.metaCollectionSource.url = "/meta-collections-data/" + itemId + ".json";
+        
+        this.$.metaCollectionsBuilder.$.metaCollectionSource.url = "/meta-collections-data/" + itemId + ".json";
       }
     });
 

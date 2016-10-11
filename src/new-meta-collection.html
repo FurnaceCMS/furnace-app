@@ -14,16 +14,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="new-meta-collection">
 
   <template>
-  	<meta-collection-builder></meta-collection-builder>
+  	<meta-collection-builder id="metaCollectionsBuilder"></meta-collection-builder>
   </template>
 
   <script>
 
     Polymer({
 
-      is: 'new-meta-collection'
-
+  		properties: {
+  	        meta_type_maping_endpont: String
+      	},
+    	is: 'new-meta-collection',
+      attached: function() {
+        this.$.metaCollectionsBuilder.$.metaTypeMappingSource.url = this.meta_type_maping_endpont;
+      }
     });
-
   </script
 </dom-module>
